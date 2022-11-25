@@ -2,6 +2,7 @@
 """
     Defines BaseModel class.
 """
+import models
 from datetime import datetime
 import uuid
 
@@ -26,6 +27,8 @@ class BaseModel:
                 else:
                     if (k != '__class__'):
                         self.__dict__[k] = v
+        else:
+            models.storage.new(self)
 
     def __str__(self):
         """
@@ -39,6 +42,7 @@ class BaseModel:
             Updates the public instance attribute 'updated_at'
         """
         self.updated_at = datetime.today()
+        models.storage.save()
 
     def to_dict(self):
         """
