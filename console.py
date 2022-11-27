@@ -154,7 +154,7 @@ class HBNBCommand(cmd.Cmd):
         r_obj = storage.all()
         key = arg_l[0] + "." + arg_l[1]
         try:
-            val = r_obj[key]
+            obj_val = r_obj[key]
         except KeyError:
             print("** no instance found **")
             return
@@ -163,11 +163,9 @@ class HBNBCommand(cmd.Cmd):
             print("** attribute name missing **")
             return
 
-        try:
-            obj_val = r_obj[key]
-        except KeyError:
+        if len(arg_l) == 3:
             print("** value missing **")
-
+            return
         try:
             attr_t = type(getattr(obj_val, arg_l[2]))
             arg_l[3] = attr_t(arg_l[3])
