@@ -123,7 +123,7 @@ class HBNBCommand(cmd.Cmd):
                 return
         objs = storage.all()
         obj_list = []
-        
+
         for objs in storage.all().values():
             if (len(arg) > 0):
                 if (arg[0] == objs.__class__.__name__):
@@ -167,7 +167,7 @@ class HBNBCommand(cmd.Cmd):
             obj_val = r_obj[key]
         except KeyError:
             print("** value missing **")
-        
+
         try:
             attr_t = type(getattr(obj_val, arg_l[2]))
             arg_l[3] = attr_t(arg_l[3])
@@ -176,22 +176,44 @@ class HBNBCommand(cmd.Cmd):
         setattr(obj_val, arg_l[2], arg_l[3])
         storage.save()
 
+    def do_count(self, args):
+        """
+            Rretrieve the number of instances of a class
+        """
+        objs_l = []
+        objs = storage.all()
+
+        try:
+            if len(args) != 0:
+                eval(args)
+        except NameError:
+            print("** class doesn't exist **")
+            return
+
+        for key, val in objs.items():
+            if len(args) != 0:
+                if type(val) is eval(args):
+                    objs_l.append(val)
+            else:
+                objs_l.append(val)
+        print(len(objs_l))
+
     def default(self, args):
         """
             Catches funcions of dot notation, default for invalid input
         """
         func_args = {
                 "all": self.do_all,
+                "count": self.do_count,
                 }
         args = (args.replace("(", ".").replace(")", ".")
                 .replace('"', "").replace(",", "").split("."))
 
         try:
-            print(args)
             cmd_arg = args[0] + " " + args[2]
             func = func_args[args[1]]
             func(cmd_arg)
-        except:
+        except (IndexError, KeyError):
             print("*** Unknown syntax:", args[0])
 
     def emptyline(self):
