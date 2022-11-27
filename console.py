@@ -176,6 +176,28 @@ class HBNBCommand(cmd.Cmd):
         setattr(obj_val, arg_l[2], arg_l[3])
         storage.save()
 
+    def default(self, args):
+        """
+            Catches funcions of dot notation, default for invalid input
+        """
+        func_args = {
+                "all": self.do_all,
+                "update": self.do_update,
+                "show": self.do_show,
+                "destroy": self.do_destroy,
+                "update": self.do_update
+                }
+        args = (args.replace("(", ".").replace(")", ".")
+                .replace('"', "").replace(",", "").split("."))
+
+        try:
+            print(args)
+            cmd_arg = args[0] + " " + args[2]
+            func = func_args[args[1]]
+            func(cmd_arg)
+        except:
+            print("*** Unknown syntax:", args[0])
+
     def emptyline(self):
         """Executes nothing upon receiving an empty line
         """
