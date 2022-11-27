@@ -113,12 +113,13 @@ class HBNBCommand(cmd.Cmd):
                 return
         objs = storage.all()
         obj_list = []
-        for key, val in objs.items():
+        
+        for objs in storage.all().values():
             if (len(arg) > 0):
-                if (arg[0] == val['__class__']):
-                    obj_list.append(val)
-            else:
-                obj_list.append(val)
+                if (arg[0] == objs.__class__.__name__):
+                    obj_list.append(objs.__str__())
+            elif (len(arg) == 0):
+                obj_list.append(objs.__str__())
         print(obj_list)
 
     def do_update(self, args):
@@ -153,10 +154,16 @@ class HBNBCommand(cmd.Cmd):
             return
 
         try:
-            r_obj[key][arg_l[2]] = arg_l[3]
-
-        except IndexError:
+            obj_val = r_obj[key]
+        except KeyError:
             print("** value missing **")
+        
+        try:
+            attr_t = type(getattr(obj_val, arg_l[2]))
+            arg_l[3] = attr_t(arg_l[3])
+        except AttributeError:
+            pass
+        setattr(obj_val, arg_l[2], arg_l[3])
         storage.save()
 
     def emptyline(self):
