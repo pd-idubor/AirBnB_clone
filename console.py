@@ -3,7 +3,7 @@
     Describes the HBNB class
 """
 import cmd
-import models
+from models import storage
 import shlex
 from models.base_model import BaseModel
 
@@ -34,7 +34,7 @@ class HBNBCommand(cmd.Cmd):
             return
         try:
             instance = eval(arg_l[0])()
-            instance.save()
+            storage.save()
             print(instance.id)
         except NameError:
             print("** class doesn't exist **")
@@ -58,7 +58,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
 
-        r_obj = models.storage.all()
+        r_obj = storage.all()
         key = arg_l[0] + "." + arg_l[1]
         try:
             val = r_obj[key]
@@ -85,7 +85,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
 
-        r_obj = models.storage.all()
+        r_obj = storage.all()
         key = arg_l[0] + "." + arg_l[1]
 
         try:
@@ -93,7 +93,7 @@ class HBNBCommand(cmd.Cmd):
 
         except KeyError:
             print("** no instance found **")
-        models.storage.save()
+        storage.save()
 
     def do_all(self, args):
         """Prints all string representation of all instances
@@ -106,7 +106,7 @@ class HBNBCommand(cmd.Cmd):
             except NameError:
                 print("** class doesn't exist **")
                 return
-        objs = models.storage.all()
+        objs = storage.all()
         obj_list = []
         for key, val in objs.items():
             if (len(arg) > 0):
@@ -135,7 +135,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
 
-        r_obj = models.storage.all()
+        r_obj = storage.all()
         key = arg_l[0] + "." + arg_l[1]
         try:
             val = r_obj[key]
@@ -152,7 +152,7 @@ class HBNBCommand(cmd.Cmd):
 
         except IndexError:
             print("** value missing **")
-        models.storage.save()
+        storage.save()
 
     def emptyline(self):
         """Executes nothing upon receiving an empty line
