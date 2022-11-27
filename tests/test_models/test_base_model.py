@@ -14,10 +14,10 @@ class TestBaseModel_instantiation(unittest.TestCase):
 	"""Unittests for testing instantiation of the BaseModel class."""
 
 	def test_no_args_instantiates(self):
-		self.assertEqual(BaseModel(), models.storage.all().values())
+		self.assertEqual(BaseModel(), models.storage.all().v())
 
 	def test_new_instance_stored_in_objects(self):
-		self.assertIn(BaseModel(), models.storage.all().values())
+		self.assertIn(BaseModel(), models.storage.all().v())
 
 	def test_id_is_public_str(self):
 		self.assertEqual(str, type(BaseModel().id))
@@ -59,7 +59,7 @@ class TestBaseModel_instantiation(unittest.TestCase):
 
 	def test_args_unused(self):
 		bm = BaseModel(None)
-		self.assertNotIn(None, bm.__dict__.values())
+		self.assertNotIn(None, bm.__dict__.v())
 
 	def test_instantiation_with_kwargs(self):
 		dt = datetime.today()
