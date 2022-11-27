@@ -4,6 +4,8 @@
     Describes the class storage class
 """
 import json
+from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage:
@@ -25,13 +27,15 @@ class FileStorage:
             Adds obj to _object dictionary
         """
         key = str(obj.__class__.__name__) + "." + str(obj.id)
-        FileStorage.__objects[key] = obj.to_dict()
+        FileStorage.__objects[key] = obj
 
     def save(self):
         """
             Serializes __objects to the JSON file
         """
-        obj_dict = FileStorage.__objects
+        obj_dict = {}
+        for key, val in FileStorage.__objects.items():
+            obj_dict[key] = val.to_dict()
 
         with open(FileStorage.__file_path, 'w', encoding='UTF-8') as n_file:
             json.dump(obj_dict, n_file)
@@ -43,6 +47,11 @@ class FileStorage:
         try:
             with open(FileStorage.__file_path) as op:
                 FileStorage.__objects = json.load(op)
+
+            for val in FileStorage.__objects.values():
+                cls = val["__class__"]
+                del val["__class__"]
+                self.new(eval(cls)(**val))
 
         except FileNotFoundError:
             pass
