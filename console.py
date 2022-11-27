@@ -182,10 +182,6 @@ class HBNBCommand(cmd.Cmd):
         """
         func_args = {
                 "all": self.do_all,
-                "update": self.do_update,
-                "show": self.do_show,
-                "destroy": self.do_destroy,
-                "update": self.do_update
                 }
         args = (args.replace("(", ".").replace(")", ".")
                 .replace('"', "").replace(",", "").split("."))
