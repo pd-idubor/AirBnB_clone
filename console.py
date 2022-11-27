@@ -6,6 +6,7 @@ import cmd
 from models import storage
 import shlex
 from models.base_model import BaseModel
+from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
@@ -13,6 +14,10 @@ class HBNBCommand(cmd.Cmd):
         Defines the the entry point of the command interpreter
     """
     prompt = "(hbnb) "
+    classes = {
+        "BaseModel",
+        "User"
+        }
 
     def do_quit(self, args):
         """Quit command to exit the program
