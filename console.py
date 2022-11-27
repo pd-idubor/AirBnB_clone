@@ -163,9 +163,12 @@ class HBNBCommand(cmd.Cmd):
             print("** attribute name missing **")
             return
 
-        if len(arg_l) == 3:
-            print("** value missing **")
-            return
+        if (len(arg_l) == 3):
+            try:
+                type(eval(argl[2])) != dict
+            except NameError:
+                print("** value missing **")
+                return
         try:
             attr_t = type(getattr(obj_val, arg_l[2]))
             arg_l[3] = attr_t(arg_l[3])
